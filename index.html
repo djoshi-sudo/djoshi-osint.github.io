@@ -1,51 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>IP Reputation Checker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">🔍 IP Reputation Checker</h1>
+<script>
+  function openReputation(source) {
+    const ip = document.getElementById("ip").value.trim();
+    if (!ip) {
+      alert("Please enter a valid IP address.");
+      return;
+    }
 
-    <label for="ip" class="block text-sm font-medium text-gray-700 mb-1">Enter IP Address:</label>
-    <input type="text" id="ip" placeholder="e.g. 8.8.8.8"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+    const sources = {
+      virustotal: `https://www.virustotal.com/gui/ip-address/${ip}`,
+      abuseipdb: `https://www.abuseipdb.com/check/${ip}`,
+      greynoise: `https://viz.greynoise.io/ip/${ip}`,
+      talos: `https://talosintelligence.com/reputation_center/lookup?search=${ip}`,
+      ipvoid: `https://www.ipvoid.com/ip-blacklist-check/${ip}/`
+    };
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-      <button onclick="openReputation('virustotal')"
-        class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">VirusTotal</button>
-
-      <button onclick="openReputation('abuseipdb')"
-        class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition">AbuseIPDB</button>
-
-      <button onclick="openReputation('greynoise')"
-        class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800 transition">GreyNoise</button>
-
-      <button onclick="openReputation('talos')"
-        class="bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition">Cisco Talos</button>
-
-      <button onclick="openReputation('ipvoid')"
-        class="bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700 transition">IPVoid</button>
-    </div>
-
-    <button onclick="openReputation('all')"
-      class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition font-semibold">
-      Check All
-    </button>
-  </div>
-
-  <script>
-    function openReputation(source) {
-      const ip = document.getElementById("ip").value.trim();
-      if (!ip) {
-        alert("Please enter a valid IP address.");
-        return;
+    if (source === 'all') {
+      let delay = 0;
+      for (let key in sources) {
+        setTimeout(() => {
+          window.open(sources[key], '_blank');
+        }, delay);
+        delay += 300; // 300ms delay between tab opens
       }
-
-      const sources = {
-        virustotal: `https://www.virustotal.com/gui/ip-address/${ip}`,
-        abuseipdb: `https://www.abuseipdb.com/check/${ip}`,
-        greynoise: `https://viz.greynoise.io/ip/${ip}`,
-        talos: `https://talosintelligence.com/reputation_center/lookup?search=${ip}`,
+    } else {
+      window.open(sources[source], '_blank');
+    }
+  }
+</script>
