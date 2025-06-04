@@ -81,5 +81,27 @@
       }
     }
   </script>
+  <section class="bg-white p-6 rounded-xl shadow-xl mt-10 max-w-3xl mx-auto">
+  <h2 class="text-xl font-semibold text-gray-800 mb-4">📰 Latest Cybersecurity News</h2>
+  <ul id="rss-feed" class="list-disc list-inside text-sm text-gray-700 space-y-2"></ul>
+</section>
+
+<script>
+  
+  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://threatpost.com/feed/")
+    .then(res => res.json())
+    .then(data => {
+      const feed = document.getElementById("rss-feed");
+      data.items.slice(0, 5).forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="${item.link}" target="_blank" class="text-blue-600 hover:underline">${item.title}</a>`;
+        feed.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error("RSS fetch error:", error);
+    });
+</script>
+
 </body>
 </html>
