@@ -14,20 +14,14 @@
       class="w-full px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-400" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-      <button onclick="openReputation('virustotal')"
-        class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">VirusTotal</button>
-
-      <button onclick="openReputation('abuseipdb')"
-        class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition">AbuseIPDB</button>
-
-      <button onclick="openReputation('greynoise')"
-        class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800 transition">GreyNoise</button>
-
-      <button onclick="openReputation('talos')"
-        class="bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition">Cisco Talos</button>
-
-      <button onclick="openReputation('ipvoid')"
-        class="bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700 transition">IPVoid</button>
+      <button onclick="openReputation('virustotal')" class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">VirusTotal</button>
+      <button onclick="openReputation('abuseipdb')" class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700">AbuseIPDB</button>
+      <button onclick="openReputation('greynoise')" class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800">GreyNoise</button>
+      <button onclick="openReputation('talos')" class="bg-green-700 text-white py-2 rounded-md hover:bg-green-800">Cisco Talos</button>
+      <button onclick="openReputation('pulsedive')" class="bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">Pulsedive</button>
+      <button onclick="openReputation('xforce')" class="bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700">IBM X-Force</button>
+      <button onclick="openReputation('mxtoolbox')" class="bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700">MXToolbox</button>
+      <button onclick="openReputation('kaspersky')" class="bg-black text-white py-2 rounded-md hover:bg-gray-900">Kaspersky OpenTip</button>
     </div>
 
     <button onclick="openReputation('all')"
@@ -49,7 +43,10 @@
         abuseipdb: `https://www.abuseipdb.com/check/${ip}`,
         greynoise: `https://viz.greynoise.io/ip/${ip}`,
         talos: `https://talosintelligence.com/reputation_center/lookup?search=${ip}`,
-        ipvoid: `https://www.ipvoid.com/ip-blacklist-check/${ip}/`
+        pulsedive: `https://pulsedive.com/indicator/?type=ip&value=${ip}`,
+        xforce: `https://exchange.xforce.ibmcloud.com/ip/${ip}`,
+        mxtoolbox: `https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a${ip}`,
+        kaspersky: `https://opentip.kaspersky.com/${ip}`
       };
 
       if (source === 'all') {
@@ -58,7 +55,7 @@
           setTimeout(() => {
             window.open(sources[key], '_blank');
           }, delay);
-          delay += 300; // delay between opening each tab to avoid blocking
+          delay += 300;
         }
       } else {
         window.open(sources[source], '_blank');
