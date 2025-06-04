@@ -47,7 +47,12 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <button onclick="openMXToolbox()" class="bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700">MXToolbox</button>
-        <button onclick="openHaveIBeenPwned()" class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700">HaveIBeenPwned</button>
+        <button onclick="openBreach('haveibeenpwned')" class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700">HaveIBeenPwned</button>
+        <button onclick="openBreach('namescan')" class="bg-blue-800 text-white py-2 rounded-md hover:bg-blue-900">NameScan</button>
+        <button onclick="openBreach('leakcheck')" class="bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">LeakCheck</button>
+        <button onclick="openBreach('illicit')" class="bg-gray-600 text-white py-2 rounded-md hover:bg-gray-700">Illicit Services</button>
+        <button onclick="openBreach('breachdirectory')" class="bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700">BreachDirectory</button>
+        <button onclick="openBreach('breachbase')" class="bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700">BreachBase</button>
       </div>
 
       <button onclick="openAllEmailChecks()" class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 font-semibold">
@@ -116,18 +121,33 @@
       }
     }
 
-    function openHaveIBeenPwned() {
+    function openBreach(service) {
       const email = document.getElementById("email").value.trim();
       if (!email) {
         alert("Please enter a valid email address.");
         return;
       }
-      window.open(`https://haveibeenpwned.com/unifiedsearch/${email}`, '_blank');
+      const sources = {
+        haveibeenpwned: `https://haveibeenpwned.com/unifiedsearch/${email}`,
+        namescan: `https://namescan.io/search?query=${email}`,
+        leakcheck: `https://leakcheck.io/search?query=${email}`,
+        illicit: `https://search.illicit.services/?q=${email}`,
+        breachdirectory: `https://breachdirectory.org/?email=${email}`,
+        breachbase: `https://breachbase.com/search?q=${email}`
+      };
+      if (sources[service]) {
+        window.open(sources[service], '_blank');
+      }
     }
 
     function openAllEmailChecks() {
       openMXToolbox();
-      setTimeout(openHaveIBeenPwned, 300);
+      setTimeout(() => openBreach('haveibeenpwned'), 300);
+      setTimeout(() => openBreach('namescan'), 600);
+      setTimeout(() => openBreach('leakcheck'), 900);
+      setTimeout(() => openBreach('illicit'), 1200);
+      setTimeout(() => openBreach('breachdirectory'), 1500);
+      setTimeout(() => openBreach('breachbase'), 1800);
     }
   </script>
 </body>
