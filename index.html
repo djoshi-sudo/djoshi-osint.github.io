@@ -36,4 +36,34 @@
     </button>
   </div>
 
-  <scrip
+  <script>
+    function openReputation(source) {
+      const ip = document.getElementById("ip").value.trim();
+      if (!ip) {
+        alert("Please enter a valid IP address.");
+        return;
+      }
+
+      const sources = {
+        virustotal: `https://www.virustotal.com/gui/ip-address/${ip}`,
+        abuseipdb: `https://www.abuseipdb.com/check/${ip}`,
+        greynoise: `https://viz.greynoise.io/ip/${ip}`,
+        talos: `https://talosintelligence.com/reputation_center/lookup?search=${ip}`,
+        ipvoid: `https://www.ipvoid.com/ip-blacklist-check/${ip}/`
+      };
+
+      if (source === 'all') {
+        let delay = 0;
+        for (let key in sources) {
+          setTimeout(() => {
+            window.open(sources[key], '_blank');
+          }, delay);
+          delay += 300; // delay between opening each tab to avoid blocking
+        }
+      } else {
+        window.open(sources[source], '_blank');
+      }
+    }
+  </script>
+</body>
+</html>
