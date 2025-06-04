@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IP / Domain / URL Reputation Checker</title>
+  <title>Universal Reputation Checker</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
   <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">🛡️ Universal Reputation Checker</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">🛡️ IP / Domain / URL Reputation Checker</h1>
 
     <label for="input" class="block text-sm font-medium text-gray-700 mb-1">Enter IP Address, Domain, or URL:</label>
     <input type="text" id="input" placeholder="e.g. 8.8.8.8, example.com, or https://bad.link"
@@ -20,7 +20,7 @@
       <button onclick="runLookup('talos')" class="bg-green-700 text-white py-2 rounded-md hover:bg-green-800">Cisco Talos</button>
       <button onclick="runLookup('xforce')" class="bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700">IBM X-Force</button>
       <button onclick="runLookup('mxtoolbox')" class="bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700">MXToolbox</button>
-      <button onclick="runLookup('kaspersky')" class="bg-black text-white py-2 rounded-md hover:bg-gray-900">Kaspersky OpenTip</button>
+      <button onclick="runLookup('kaspersky')" class="bg-black text-white py-2 rounded-md hover:bg-gray-900">Kaspersky</button>
       <button onclick="runLookup('urlscan')" class="bg-green-800 text-white py-2 rounded-md hover:bg-green-900">URLScan.io</button>
     </div>
 
@@ -49,10 +49,12 @@
         abuseipdb: isIP ? `https://www.abuseipdb.com/check/${input}` : null,
         greynoise: isIP ? `https://viz.greynoise.io/ip/${input}` : null,
         talos: isIP ? `https://talosintelligence.com/reputation_center/lookup?search=${input}` : null,
-        xforce: `https://exchange.xforce.ibmcloud.com/${isIP ? 'ip' : 'url'}/${domain}`,
-        mxtoolbox: isIP ? `https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a${input}` : null,
-        kaspersky: `https://opentip.kaspersky.com/${domain}`,
-        urlscan: `https://urlscan.io/domain/${domain}`
+        xforce: isIP
+          ? `https://exchange.xforce.ibmcloud.com/ip/${input}`
+          : `https://exchange.xforce.ibmcloud.com/url/${domain}`,
+        mxtoolbox: isIP ? `https://mxtoolbox.com/SuperTool.aspx?action=blacklist:${input}` : null,
+        kaspersky: !isIP ? `https://opentip.kaspersky.com/${domain}` : null,
+        urlscan: !isIP ? `https://urlscan.io/domain/${domain}` : null
       };
 
       if (service === 'all') {
@@ -66,7 +68,7 @@
         }
       } else {
         if (!sources[service]) {
-          alert(`${service} does not support this input type.`);
+          alert(`${service} is not applicable for this input type.`);
         } else {
           window.open(sources[service], '_blank');
         }
