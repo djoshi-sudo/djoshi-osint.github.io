@@ -2,61 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IP Reputation Checker</title>
+  <title>IP / Domain / URL Reputation Checker</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
   <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">🔍 IP Reputation Checker</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">🛡️ Universal Reputation Checker</h1>
 
-    <label for="ip" class="block text-sm font-medium text-gray-700 mb-1">Enter IP Address:</label>
-    <input type="text" id="ip" placeholder="e.g. 8.8.8.8"
+    <label for="input" class="block text-sm font-medium text-gray-700 mb-1">Enter IP Address, Domain, or URL:</label>
+    <input type="text" id="input" placeholder="e.g. 8.8.8.8, example.com, or https://bad.link"
       class="w-full px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-400" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-      <button onclick="openReputation('virustotal')" class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">VirusTotal</button>
-      <button onclick="openReputation('abuseipdb')" class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700">AbuseIPDB</button>
-      <button onclick="openReputation('greynoise')" class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800">GreyNoise</button>
-      <button onclick="openReputation('talos')" class="bg-green-700 text-white py-2 rounded-md hover:bg-green-800">Cisco Talos</button>
-      <button onclick="openReputation('xforce')" class="bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700">IBM X-Force</button>
-      <button onclick="openReputation('mxtoolbox')" class="bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700">MXToolbox</button>
-      <button onclick="openReputation('kaspersky')" class="bg-black text-white py-2 rounded-md hover:bg-gray-900">Kaspersky OpenTip</button>
+      <button onclick="runLookup('virustotal')" class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">VirusTotal</button>
+      <button onclick="runLookup('abuseipdb')" class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700">AbuseIPDB</button>
+      <button onclick="runLookup('greynoise')" class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800">GreyNoise</button>
+      <button onclick="runLookup('talos')" class="bg-green-700 text-white py-2 rounded-md hover:bg-green-800">Cisco Talos</button>
+      <button onclick="runLookup('xforce')" class="bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700">IBM X-Force</button>
+      <button onclick="runLookup('mxtoolbox')" class="bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700">MXToolbox</button>
+      <button onclick="runLookup('kaspersky')" class="bg-black text-white py-2 rounded-md hover:bg-gray-900">Kaspersky OpenTip</button>
+      <button onclick="runLookup('urlscan')" class="bg-green-800 text-white py-2 rounded-md hover:bg-green-900">URLScan.io</button>
     </div>
 
-    <button onclick="openReputation('all')"
-      class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition font-semibold">
+    <button onclick="runLookup('all')"
+      class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 font-semibold">
       🚀 Check All
     </button>
   </div>
 
   <script>
-    function openReputation(source) {
-      const ip = document.getElementById("ip").value.trim();
-      if (!ip) {
-        alert("Please enter a valid IP address.");
+    function runLookup(service) {
+      const input = document.getElementById("input").value.trim();
+      if (!input) {
+        alert("Please enter an IP, domain, or URL.");
         return;
       }
 
+      const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(input);
+      const isURL = /^https?:\/\//i.test(input);
+      const domain = isURL ? new URL(input).hostname : input;
+
       const sources = {
-        virustotal: `https://www.virustotal.com/gui/ip-address/${ip}`,
-        abuseipdb: `https://www.abuseipdb.com/check/${ip}`,
-        greynoise: `https://viz.greynoise.io/ip/${ip}`,
-        talos: `https://talosintelligence.com/reputation_center/lookup?search=${ip}`,
-        xforce: `https://exchange.xforce.ibmcloud.com/ip/${ip}`,
-        mxtoolbox: `https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a${ip}`,
-        kaspersky: `https://opentip.kaspersky.com/${ip}`
+        virustotal: isIP
+          ? `https://www.virustotal.com/gui/ip-address/${input}`
+          : `https://www.virustotal.com/gui/domain/${domain}`,
+        abuseipdb: isIP ? `https://www.abuseipdb.com/check/${input}` : null,
+        greynoise: isIP ? `https://viz.greynoise.io/ip/${input}` : null,
+        talos: isIP ? `https://talosintelligence.com/reputation_center/lookup?search=${input}` : null,
+        xforce: `https://exchange.xforce.ibmcloud.com/${isIP ? 'ip' : 'url'}/${domain}`,
+        mxtoolbox: isIP ? `https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a${input}` : null,
+        kaspersky: `https://opentip.kaspersky.com/${domain}`,
+        urlscan: `https://urlscan.io/domain/${domain}`
       };
 
-      if (source === 'all') {
+      if (service === 'all') {
         let delay = 0;
         for (let key in sources) {
-          setTimeout(() => {
-            window.open(sources[key], '_blank');
-          }, delay);
-          delay += 300;
+          const url = sources[key];
+          if (url) {
+            setTimeout(() => window.open(url, '_blank'), delay);
+            delay += 300;
+          }
         }
       } else {
-        window.open(sources[source], '_blank');
+        if (!sources[service]) {
+          alert(`${service} does not support this input type.`);
+        } else {
+          window.open(sources[service], '_blank');
+        }
       }
     }
   </script>
