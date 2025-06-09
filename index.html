@@ -35,6 +35,24 @@
         class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 font-semibold">
         🚀 Check All
       </button>
+
+      <!-- Hash Analysis Section -->
+      <div class="mt-10 pt-6 border-t border-gray-300">
+        <h2 class="text-xl font-bold mb-4 text-blue-700">🔐 File Hash Reputation Check</h2>
+        <label for="hash" class="block text-sm font-medium text-gray-700 mb-1">Enter MD5 / SHA1 / SHA256 Hash:</label>
+        <input type="text" id="hash" placeholder="e.g. d41d8cd98f00b204e9800998ecf8427e"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <button onclick="checkHash('virustotal')" class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">VirusTotal</button>
+          <button onclick="checkHash('hybrid')" class="bg-green-600 text-white py-2 rounded-md hover:bg-green-700">Hybrid Analysis</button>
+          <button onclick="checkHash('joesandbox')" class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800">Joe Sandbox</button>
+          <button onclick="checkHash('intezer')" class="bg-indigo-700 text-white py-2 rounded-md hover:bg-indigo-800">Intezer Analyze</button>
+          <button onclick="checkHash('metadefender')" class="bg-purple-700 text-white py-2 rounded-md hover:bg-purple-800">MetaDefender</button>
+        </div>
+
+        <button onclick="checkHash('all')" class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 font-semibold">🚀 Check All Sandboxes</button>
+      </div>
     </div>
 
     <!-- File Analysis Section -->
@@ -110,6 +128,32 @@
       }
     }
 
+    function checkHash(service) {
+      const hash = document.getElementById("hash").value.trim();
+      if (!hash) {
+        alert("Please enter a hash value.");
+        return;
+      }
+
+      const hashSites = {
+        virustotal: `https://www.virustotal.com/gui/file/${hash}`,
+        hybrid: `https://www.hybrid-analysis.com/search?query=${hash}`,
+        joesandbox: `https://www.joesandbox.com/search?q=${hash}`,
+        intezer: `https://analyze.intezer.com/search?query=${hash}`,
+        metadefender: `https://metadefender.opswat.com/results/file/${hash}/hash`
+      };
+
+      if (service === 'all') {
+        let delay = 0;
+        for (let key in hashSites) {
+          setTimeout(() => window.open(hashSites[key], '_blank'), delay);
+          delay += 300;
+        }
+      } else {
+        window.open(hashSites[service], '_blank');
+      }
+    }
+
     function checkAllSandboxes() {
       const sandboxUrls = [
         "https://www.virustotal.com/gui/home/upload",
@@ -126,7 +170,6 @@
       });
     }
 
-    // Load multiple RSS feeds
     const rssFeeds = [
       "https://feeds.feedburner.com/TheHackersNews",
       "https://www.bleepingcomputer.com/feed/"
