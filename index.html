@@ -46,9 +46,6 @@
           <button onclick="checkHash('virustotal')" class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">VirusTotal</button>
           <button onclick="checkHash('hybrid')" class="bg-green-600 text-white py-2 rounded-md hover:bg-green-700">Hybrid Analysis</button>
           <button onclick="checkHash('joesandbox')" class="bg-gray-700 text-white py-2 rounded-md hover:bg-gray-800">Joe Sandbox</button>
-          <button onclick="checkHash('xforce')" class="bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700">IBM X-Force</button>
-          <button onclick="checkHash('anyrun')" class="bg-red-700 text-white py-2 rounded-md hover:bg-red-800">ANY.RUN</button>
-          <button onclick="checkHash('talos')" class="bg-green-800 text-white py-2 rounded-md hover:bg-green-900">Cisco Talos</button>
         </div>
 
         <button onclick="checkHash('all')" class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 font-semibold">🚀 Check All Sandboxes</button>
@@ -116,10 +113,7 @@
       const hashSites = {
         virustotal: `https://www.virustotal.com/gui/file/${hash}`,
         hybrid: `https://www.hybrid-analysis.com/search?query=${hash}`,
-        joesandbox: `https://www.joesandbox.com/search?q=${hash}`,
-        xforce: `https://exchange.xforce.ibmcloud.com/malware/${hash}`,
-        anyrun: `https://app.any.run/search/?text=${hash}`,
-        talos: `https://talosintelligence.com/talos-block-list#${hash}`
+        joesandbox: `https://www.joesandbox.com/search?q=${hash}`
       };
 
       if (service === 'all') {
