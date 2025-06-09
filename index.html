@@ -52,16 +52,16 @@
       </div>
     </div>
 
-    <!-- Security Tool Search Section -->
+    <!-- Living off the Land Binaries Section -->
     <div class="bg-white p-8 rounded-xl shadow-xl mt-10">
-      <h2 class="text-xl font-bold mb-4 text-blue-700">🔧 Free Pentesting Tools (LoFP)</h2>
-      <input type="text" id="toolSearch" placeholder="Search tools..." onkeyup="filterTools()" class="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      <ul id="toolList" class="list-disc list-inside text-sm text-gray-700 space-y-2">
-        <li><a href="https://github.com/aboul3la/Sublist3r" target="_blank" class="text-blue-600 hover:underline">Sublist3r</a> – Subdomain enumeration</li>
-        <li><a href="https://github.com/projectdiscovery/httpx" target="_blank" class="text-blue-600 hover:underline">httpx</a> – HTTP probing</li>
-        <li><a href="https://github.com/sqlmapproject/sqlmap" target="_blank" class="text-blue-600 hover:underline">sqlmap</a> – Automated SQL injection</li>
-        <li><a href="https://github.com/maurosoria/dirsearch" target="_blank" class="text-blue-600 hover:underline">dirsearch</a> – Web path scanner</li>
-        <li><a href="https://github.com/OWASP/Amass" target="_blank" class="text-blue-600 hover:underline">Amass</a> – Network mapping and attack surface discovery</li>
+      <h2 class="text-xl font-bold mb-4 text-blue-700">⚙️ Living off the Land Binaries (LOLBins)</h2>
+      <input type="text" id="lolSearch" placeholder="Search LOLBin (e.g., certutil, mshta)..." onkeyup="filterLOLBins()" class="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      <ul id="lolbinList" class="list-disc list-inside text-sm text-gray-700 space-y-2">
+        <li><strong>certutil</strong>: Certificate utility that can download files from the Internet</li>
+        <li><strong>mshta</strong>: Executes Microsoft HTML Applications and JavaScript/VBScript</li>
+        <li><strong>regsvr32</strong>: Can be used to execute remotely hosted scriptlets</li>
+        <li><strong>powershell</strong>: Full scripting engine often abused in malware</li>
+        <li><strong>wmic</strong>: Windows Management Instrumentation utility often used in lateral movement</li>
       </ul>
     </div>
 
@@ -140,12 +140,12 @@
       }
     }
 
-    function filterTools() {
-      const input = document.getElementById("toolSearch").value.toLowerCase();
-      const tools = document.getElementById("toolList").getElementsByTagName("li");
-      for (let i = 0; i < tools.length; i++) {
-        const text = tools[i].innerText.toLowerCase();
-        tools[i].style.display = text.includes(input) ? "list-item" : "none";
+    function filterLOLBins() {
+      const input = document.getElementById("lolSearch").value.toLowerCase();
+      const listItems = document.getElementById("lolbinList").getElementsByTagName("li");
+      for (let i = 0; i < listItems.length; i++) {
+        const text = listItems[i].innerText.toLowerCase();
+        listItems[i].style.display = text.includes(input) ? "list-item" : "none";
       }
     }
 
